@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package atuador;
+
+message Solicitacao {
+  // Adicione campos conforme necessário
+}
+
+message Resposta {
+  string status = 1;
+}
+
+service Atuador {
+  rpc LigarLampada(Solicitacao) returns (Resposta);
+  rpc DesligarLampada(Solicitacao) returns (Resposta);
+
+  rpc LigarAquecedor(Solicitacao) returns (Resposta);
+  rpc DesligarAquecedor(Solicitacao) returns (Resposta);
+
+  rpc AtivarControleIncendio(Solicitacao) returns (Resposta);
+  rpc DesativarControleIncendio(Solicitacao) returns (Resposta);
+  // Adicione mais métodos conforme necessário
+}

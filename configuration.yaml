@@ -1,0 +1,11 @@
+# configuration.yaml
+sensor:
+  - platform: mqtt
+    name: "Temperatura"
+    state_topic: "sensor_temperatura"
+
+light:
+  - platform: grpc
+    host: localhost
+    port: 50051
+    name: "Lâmpada"
