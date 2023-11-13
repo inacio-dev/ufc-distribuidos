@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\ratuador.proto\x12\x07\x61tuador\"\r\n\x0bSolicitacao\"\x1a\n\x08Resposta\x12\x0e\n\x06status\x18\x01 \x01(\t2\x80\x03\n\x07\x41tuador\x12\x37\n\x0cLigarLampada\x12\x14.atuador.Solicitacao\x1a\x11.atuador.Resposta\x12:\n\x0f\x44\x65sligarLampada\x12\x14.atuador.Solicitacao\x1a\x11.atuador.Resposta\x12\x39\n\x0eLigarAquecedor\x12\x14.atuador.Solicitacao\x1a\x11.atuador.Resposta\x12<\n\x11\x44\x65sligarAquecedor\x12\x14.atuador.Solicitacao\x1a\x11.atuador.Resposta\x12\x41\n\x16\x41tivarControleIncendio\x12\x14.atuador.Solicitacao\x1a\x11.atuador.Resposta\x12\x44\n\x19\x44\x65sativarControleIncendio\x12\x14.atuador.Solicitacao\x1a\x11.atuador.Respostab\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\ratuador.proto\x12\x07\x61tuador\"\r\n\x0bSolicitacao\"\x1a\n\x08Resposta\x12\x0e\n\x06status\x18\x01 \x01(\t2\xfe\x02\n\x07\x41tuador\x12\x37\n\x0cLigarLampada\x12\x14.atuador.Solicitacao\x1a\x11.atuador.Resposta\x12:\n\x0f\x44\x65sligarLampada\x12\x14.atuador.Solicitacao\x1a\x11.atuador.Resposta\x12\x39\n\x0eLigarAquecedor\x12\x14.atuador.Solicitacao\x1a\x11.atuador.Resposta\x12<\n\x11\x44\x65sligarAquecedor\x12\x14.atuador.Solicitacao\x1a\x11.atuador.Resposta\x12@\n\x15LigarControleIncendio\x12\x14.atuador.Solicitacao\x1a\x11.atuador.Resposta\x12\x43\n\x18\x44\x65sligarControleIncendio\x12\x14.atuador.Solicitacao\x1a\x11.atuador.Respostab\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -25,5 +25,5 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['_RESPOSTA']._serialized_start=41
   _globals['_RESPOSTA']._serialized_end=67
   _globals['_ATUADOR']._serialized_start=70
-  _globals['_ATUADOR']._serialized_end=454
+  _globals['_ATUADOR']._serialized_end=452
 # @@protoc_insertion_point(module_scope)

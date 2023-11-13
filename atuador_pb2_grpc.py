@@ -34,13 +34,13 @@ class AtuadorStub(object):
                 request_serializer=atuador__pb2.Solicitacao.SerializeToString,
                 response_deserializer=atuador__pb2.Resposta.FromString,
                 )
-        self.AtivarControleIncendio = channel.unary_unary(
-                '/atuador.Atuador/AtivarControleIncendio',
+        self.LigarControleIncendio = channel.unary_unary(
+                '/atuador.Atuador/LigarControleIncendio',
                 request_serializer=atuador__pb2.Solicitacao.SerializeToString,
                 response_deserializer=atuador__pb2.Resposta.FromString,
                 )
-        self.DesativarControleIncendio = channel.unary_unary(
-                '/atuador.Atuador/DesativarControleIncendio',
+        self.DesligarControleIncendio = channel.unary_unary(
+                '/atuador.Atuador/DesligarControleIncendio',
                 request_serializer=atuador__pb2.Solicitacao.SerializeToString,
                 response_deserializer=atuador__pb2.Resposta.FromString,
                 )
@@ -73,13 +73,13 @@ class AtuadorServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def AtivarControleIncendio(self, request, context):
+    def LigarControleIncendio(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def DesativarControleIncendio(self, request, context):
+    def DesligarControleIncendio(self, request, context):
         """Adicione mais métodos conforme necessário
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -109,13 +109,13 @@ def add_AtuadorServicer_to_server(servicer, server):
                     request_deserializer=atuador__pb2.Solicitacao.FromString,
                     response_serializer=atuador__pb2.Resposta.SerializeToString,
             ),
-            'AtivarControleIncendio': grpc.unary_unary_rpc_method_handler(
-                    servicer.AtivarControleIncendio,
+            'LigarControleIncendio': grpc.unary_unary_rpc_method_handler(
+                    servicer.LigarControleIncendio,
                     request_deserializer=atuador__pb2.Solicitacao.FromString,
                     response_serializer=atuador__pb2.Resposta.SerializeToString,
             ),
-            'DesativarControleIncendio': grpc.unary_unary_rpc_method_handler(
-                    servicer.DesativarControleIncendio,
+            'DesligarControleIncendio': grpc.unary_unary_rpc_method_handler(
+                    servicer.DesligarControleIncendio,
                     request_deserializer=atuador__pb2.Solicitacao.FromString,
                     response_serializer=atuador__pb2.Resposta.SerializeToString,
             ),
@@ -198,7 +198,7 @@ class Atuador(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def AtivarControleIncendio(request,
+    def LigarControleIncendio(request,
             target,
             options=(),
             channel_credentials=None,
@@ -208,14 +208,14 @@ class Atuador(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/atuador.Atuador/AtivarControleIncendio',
+        return grpc.experimental.unary_unary(request, target, '/atuador.Atuador/LigarControleIncendio',
             atuador__pb2.Solicitacao.SerializeToString,
             atuador__pb2.Resposta.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def DesativarControleIncendio(request,
+    def DesligarControleIncendio(request,
             target,
             options=(),
             channel_credentials=None,
@@ -225,7 +225,7 @@ class Atuador(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/atuador.Atuador/DesativarControleIncendio',
+        return grpc.experimental.unary_unary(request, target, '/atuador.Atuador/DesligarControleIncendio',
             atuador__pb2.Solicitacao.SerializeToString,
             atuador__pb2.Resposta.FromString,
             options, channel_credentials,

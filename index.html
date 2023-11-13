@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sensor Data</title>
+    <script>
+      function fetchData(sensor) {
+        fetch(`http://localhost:3000/${sensor}`)
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById(sensor).innerText = JSON.stringify(
+              data,
+              null,
+              2
+            );
+          })
+          .catch((error) =>
+            console.error(`Erro ao buscar dados do ${sensor}:`, error)
+          );
+      }
+
+      function fetchStatus(actuator) {
+        fetch(`http://localhost:3000/${actuator}/status`)
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById(
+              `${actuator}-status`
+            ).innerText = `Status: ${data.status}`;
+          })
+          .catch((error) =>
+            console.error(`Erro ao buscar status do ${actuator}:`, error)
+          );
+      }
+
+      function updateData() {
+        fetchData("SensorLuminosidade");
+        fetchData("SensorTemperatura");
+        fetchData("SensorFumaca");
+
+        fetchStatus("aquecedor");
+        fetchStatus("controle-incendio");
+        fetchStatus("lampada");
+      }
+
+      // Atualiza os dados a cada 5 segundos (5000 milissegundos)
+      setInterval(updateData, 5000);
+
+      // Executa a primeira atualização ao carregar a página
+      updateData();
+
+      function sendCommand(actuator, command) {
+        fetch(`http://localhost:3000/${actuator}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ command }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(`Comando enviado para ${actuator}: ${command}`);
+            // Atualiza o status após enviar o comando
+            fetchStatus(actuator);
+          })
+          .catch((error) =>
+            console.error(`Erro ao enviar comando para ${actuator}:`, error)
+          );
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Sensor Data</h1>
+
+    <h2>Sensor de Luminosidade</h2>
+    <pre id="SensorLuminosidade"></pre>
+    <button onclick="fetchData('SensorLuminosidade')">Atualizar Dados</button>
+
+    <h2>Sensor de Temperatura</h2>
+    <pre id="SensorTemperatura"></pre>
+    <button onclick="fetchData('SensorTemperatura')">Atualizar Dados</button>
+
+    <h2>Sensor de Fumaça</h2>
+    <pre id="SensorFumaca"></pre>
+    <button onclick="fetchData('SensorFumaca')">Atualizar Dados</button>
+
+    <h2>Atuadores</h2>
+    <h3>Aquecedor</h3>
+    <pre id="aquecedor-status"></pre>
+    <button onclick="sendCommand('aquecedor', 'ligar')">Ligar Aquecedor</button>
+    <button onclick="sendCommand('aquecedor', 'desligar')">
+      Desligar Aquecedor
+    </button>
+
+    <h3>Controle de Incêndio</h3>
+    <pre id="controle-incendio-status"></pre>
+    <button onclick="sendCommand('controleincendio', 'ligar')">
+      Ligar Controle de Incêndio
+    </button>
+    <button onclick="sendCommand('controleincendio', 'desligar')">
+      Desligar Controle de Incêndio
+    </button>
+
+    <h3>Lâmpada</h3>
+    <pre id="lampada-status"></pre>
+    <button onclick="sendCommand('lampada', 'ligar')">Ligar Lâmpada</button>
+    <button onclick="sendCommand('lampada', 'desligar')">
+      Desligar Lâmpada
+    </button>
+  </body>
+</html>

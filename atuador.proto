@@ -17,7 +17,7 @@ service Atuador {
   rpc LigarAquecedor(Solicitacao) returns (Resposta);
   rpc DesligarAquecedor(Solicitacao) returns (Resposta);
 
-  rpc AtivarControleIncendio(Solicitacao) returns (Resposta);
-  rpc DesativarControleIncendio(Solicitacao) returns (Resposta);
+  rpc LigarControleIncendio(Solicitacao) returns (Resposta);
+  rpc DesligarControleIncendio(Solicitacao) returns (Resposta);
   // Adicione mais métodos conforme necessário
 }

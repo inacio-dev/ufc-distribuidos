@@ -17,11 +17,10 @@ class AtuadorAquecedor(atuador_pb2_grpc.AtuadorServicer):
         print("Aquecedor desligado")
         return atuador_pb2.Resposta(status="Aquecedor desligado")
 
-
 def iniciar_servidor():
     servidor = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     atuador_pb2_grpc.add_AtuadorServicer_to_server(AtuadorAquecedor(), servidor)
-    servidor.add_insecure_port('[::]:50052')
+    servidor.add_insecure_port('[::]:50051')  # Porta diferente para o aquecedor
     servidor.start()
     servidor.wait_for_termination()
 

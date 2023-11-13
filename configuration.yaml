@@ -7,5 +7,5 @@ sensor:
 light:
   - platform: grpc
     host: localhost
-    port: 50051
+    port: 50052
     name: "Lâmpada"
