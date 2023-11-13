@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,9 +15,10 @@
     header {
       background: linear-gradient(45deg, #4caf50, #2196f3);
       color: #fff;
-      padding: 20px;
+      padding: 25px;
       text-align: center;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
     }
 
     h1 {
@@ -87,6 +89,8 @@
 
     button:hover {
       background-color: #45a049;
+      transform: scale(1.01);
+
     }
 
     .actuators {
@@ -102,16 +106,14 @@
       padding: 20px;
       margin: 10px;
       border-radius: 10px;
+      flex-direction: row;
       flex: 1 1 300px;
       text-align: center;
       border: 2px solid #ddd;
       transition: border-color 0.3s, box-shadow 0.3s;
     }
 
-    .actuator:hover {
-      border-color: #4caf50;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-    }
+
 
     .actuators h2 {
       font-size: 1.5em;
@@ -127,64 +129,62 @@
       margin-top: 10px;
     }
   </style>
-  
+
 </head>
+
 <body>
-  <header>
+  <header class="header">
     <h1>Home Assistant Dashboard</h1>
   </header>
 
   <main>
     <section>
       <img src="icones/luzsensor.png" alt="Ícone Luminosidade" class="sensor-icon" />
-      <h2>Sensor de Luminosidade</h2>
+      <h2>Luminosidade</h2>
       <pre id="SensorLuminosidade"></pre>
       <button onclick="fetchData('SensorLuminosidade')">Atualizar Dados</button>
     </section>
 
     <section>
       <img src="icones/tempsensor.png" alt="Ícone Temperatura" class="sensor-icon" />
-      <h2>Sensor de Temperatura</h2>
+      <h2>Temperatura</h2>
       <pre id="SensorTemperatura"></pre>
       <button onclick="fetchData('SensorTemperatura')">Atualizar Dados</button>
     </section>
 
     <section>
       <img src="icones/smokesensor.png" alt="Ícone Fumaça" class="sensor-icon" />
-      <h2>Sensor de Fumaça</h2>
+      <h2>Detector de Fumaça</h2>
       <pre id="SensorFumaca"></pre>
       <button onclick="fetchData('SensorFumaca')">Atualizar Dados</button>
     </section>
   </main>
 
-  <section class="actuators">
-    <div class="actuator">
-      <h2>Atuadores</h2>
+  <main>
+    <section class="actuator">
+      <img src="icones/heater.jpg" alt="Ícone Aquecedor" class="actuator-icon" />
+      <h3>Aquecedor</h3>
+      <pre id="aquecedor-status"></pre>
+      <button onclick="sendCommand('aquecedor', 'ligar')">Ligar</button>
+      <button onclick="sendCommand('aquecedor', 'desligar')">Desligar</button>
+    </section>
 
-      <div>
-        <img src="icones/heater.jpg" alt="Ícone Aquecedor" class="actuator-icon" />
-        <h3>Aquecedor</h3>
-        <pre id="aquecedor-status"></pre>
-        <button onclick="sendCommand('aquecedor', 'ligar')">Ligar Aquecedor</button>
-        <button onclick="sendCommand('aquecedor', 'desligar')">Desligar Aquecedor</button>
-      </div>
+    <section class="actuator">
+      <img src="icones/firecontroler.png" alt="Ícone Controle de Incêndio" class="actuator-icon" />
+      <h3>Controle de Incêndio</h3>
+      <pre id="controle-incendio-status"></pre>
+      <button onclick="sendCommand('controleincendio', 'ligar')">Ligar</button>
+      <button onclick="sendCommand('controleincendio', 'desligar')">Desligar</button>
+    </section>
 
-      <div>
-        <img src="icones/firecontroler.png" alt="Ícone Controle de Incêndio" class="actuator-icon" />
-        <h3>Controle de Incêndio</h3>
-        <pre id="controle-incendio-status"></pre>
-        <button onclick="sendCommand('controleincendio', 'ligar')">Ligar Controle de Incêndio</button>
-        <button onclick="sendCommand('controleincendio', 'desligar')">Desligar Controle de Incêndio</button>
-      </div>
-
-      <div>
-        <img src="icones/lamp.png" alt="Ícone Lâmpada" class="actuator-icon" />
-        <h3>Lâmpada</h3>
-        <pre id="lampada-status"></pre>
-        <button onclick="sendCommand('lampada', 'ligar')">Ligar Lâmpada</button>
-        <button onclick="sendCommand('lampada', 'desligar')">Desligar Lâmpada</button>
-      </div>
-    </div>
-  </section>
+    <section class="actuator">
+      <img src="icones/lamp.png" alt="Ícone Lâmpada" class="actuator-icon" />
+      <h3>Lâmpada</h3>
+      <pre id="lampada-status"></pre>
+      <button onclick="sendCommand('lampada', 'ligar')">Ligar</button>
+      <button onclick="sendCommand('lampada', 'desligar')">Desligar</button>
+    </section>
+  </main>
 </body>
+
 </html>
