@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home Assistant Dashboard</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 20px;
+      background: linear-gradient(135deg, #f4f4f4, #e0e0e0);
+    }
+
+    header {
+      background: linear-gradient(45deg, #4caf50, #2196f3);
+      color: #fff;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2em;
+      text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    main {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+
+    section {
+      background-color: #fff;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      margin: 10px;
+      border-radius: 10px;
+      flex: 1 1 300px;
+      text-align: center;
+      border: 2px solid #ddd;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    section:hover {
+      border-color: #4caf50;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+      color: #333;
+      font-size: 1.2em;
+    }
+
+    .icon {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 10px;
+      transition: transform 0.3s;
+    }
+
+    .icon:hover {
+      transform: scale(1.2);
+    }
+
+    .nightowl {
+      color: #2c3e50;
+      background: #ecf0f1;
+      border: 1px solid #bdc3c7;
+      padding: 10px;
+      border-radius: 5px;
+      overflow: auto;
+      margin: 15px 0;
+      font-size: 1.1em;
+      transition: background 0.3s;
+    }
+
+    .nightowl:hover {
+      background: #d0d3d4;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+      transform: scale(1.01);
+    }
+
+    .actuators {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+
+    .actuator {
+      background-color: #fff;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      margin: 10px;
+      border-radius: 10px;
+      flex-direction: row;
+      flex: 1 1 300px;
+      text-align: center;
+      border: 2px solid #ddd;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .actuators h2 {
+      font-size: 1.5em;
+      color: #333;
+      margin-bottom: 15px;
+      background-color: #ddd;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .actuator h3 {
+      margin-top: 10px;
+    }
+  </style>
+
+  <script>
+    function fetchData(sensor) {
+      fetch(`http://localhost:3000/${sensor}`)
+        .then((response) => response.json())
+        .then((data) => {
+          document.getElementById(sensor).innerHTML = formatSensorData(sensor, data);
+        })
+        .catch((error) =>
+          console.error(`Erro ao buscar dados do ${sensor}:`, error)
+        );
+    }
+
+    function sendCommand(actuator, command) {
+      fetch(`http://localhost:3000/${actuator}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ command }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(`Comando enviado para ${actuator}: ${command}`);
+          // Atualiza o status após enviar o comando
+          fetchStatus(actuator);
+        })
+        .catch((error) =>
+          console.error(`Erro ao enviar comando para ${actuator}:`, error)
+        );
+    }
+
+    function formatSensorData(sensor, data) {
+      if (sensor === 'SensorLuminosidade' && data.id && data.nivel_luminosidade && data.timestamp) {
+        const formattedTime = new Date(data.timestamp * 1000).toLocaleTimeString();
+        return `<div class="nightowl">Nível de Luminosidade: ${data.nivel_luminosidade}%<br>Leitura feita em: ${formattedTime}</div>`;
+      } else if (sensor === 'SensorTemperatura' && data.id && data.temperatura && data.timestamp) {
+        const formattedTime = new Date(data.timestamp * 1000).toLocaleTimeString();
+        return `<div class="nightowl">Temperatura: ${data.temperatura.toFixed(2)}°C<br>Leitura feita em: ${formattedTime}</div>`;
+      } else if (sensor === 'SensorFumaca' && data.id && data.presenca_fumaca && data.timestamp) {
+        const formattedTime = new Date(data.timestamp * 1000).toLocaleTimeString();
+        return `<div class="nightowl">Presença de Fumaça: ${data.presenca_fumaca}<br>Leitura feita em: ${formattedTime}</div>`;
+      }
+      return JSON.stringify(data, null, 2);
+    }
+
+    function fetchStatus(actuator) {
+      // Função para buscar e exibir o status do atuador após enviar o comando
+      fetchData(`${actuator}-status`);
+    }
+
+    // Chama a função fetchData a cada 10 segundos
+    setInterval(() => {
+      fetchData('SensorLuminosidade');
+      fetchData('SensorTemperatura');
+      fetchData('SensorFumaca');
+    }, 10000);
+
+  </script>
+</head>
+
+<body>
+  <header class="header">
+    <h1>Home Assistant Dashboard</h1>
+  </header>
+
+  <main>
+    <section>
+      <img src="icones/luzsensor.png" alt="Ícone Luminosidade" class="icon" />
+      <h2>Luminosidade</h2>
+      <div id="SensorLuminosidade"></div>
+      <button onclick="fetchData('SensorLuminosidade')">Atualizar Dados</button>
+    </section>
+
+    <section>
+      <img src="icones/tempsensor.png" alt="Ícone Temperatura" class="icon" />
+      <h2>Temperatura</h2>
+      <div id="SensorTemperatura"></div>
+      <button onclick="fetchData('SensorTemperatura')">Atualizar Dados</button>
+    </section>
+
+    <section>
+      <img src="icones/smokesensor.png" alt="Ícone Fumaça" class="icon" />
+      <h2>Detector de Fumaça</h2>
+      <div id="SensorFumaca"></div>
+      <button onclick="fetchData('SensorFumaca')">Atualizar Dados</button>
+    </section>
+  </main>
+
+  <main>
+    <section class="actuator">
+      <img src="icones/heater.jpg" alt="Ícone Aquecedor" class="icon" />
+      <h3>Aquecedor</h3>
+      <div id="aquecedor-status"></div>
+      <button onclick="sendCommand('aquecedor', 'ligar')">Ligar</button>
+      <button onclick="sendCommand('aquecedor', 'desligar')">Desligar</button>
+    </section>
+
+    <section class="actuator">
+      <img src="icones/firecontroler.png" alt="Ícone Controle de Incêndio" class="icon" />
+      <h3>Controle de Incêndio</h3>
+      <div id="controle-incendio-status"></div>
+      <button onclick="sendCommand('controleincendio', 'ligar')">Ligar</button>
+      <button onclick="sendCommand('controleincendio', 'desligar')">Desligar</button>
+    </section>
+
+    <section class="actuator">
+      <img src="icones/lamp.png" alt="Ícone Lâmpada" class="icon" />
+      <h3>Lâmpada</h3>
+      <div id="lampada-status"></div>
+      <button onclick="sendCommand('lampada', 'ligar')">Ligar</button>
+      <button onclick="sendCommand('lampada', 'desligar')">Desligar</button>
+    </section>
+  </main>
+</body>
+
+</html>
